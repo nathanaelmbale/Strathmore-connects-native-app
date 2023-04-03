@@ -20,11 +20,11 @@ const HomeScreen = () => {
             <Image source={{
               uri: 'https://plus.unsplash.com/premium_photo-1679436987388-52ece05745df?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80'
             }}
-              className="bg-slate-400 w-100 h-52 rounded-lg"
+              className="bg-slate-400 w-100 h-52 rounded-t-lg"
             />
           </View>
 
-          <View className='card-body bg-white p-3'>
+          <View className='card-body bg-white p-3 rounded-b-lg'>
             <Text className='font-semibold text-3xl'>Lets us meet somewhere today</Text>
             <Text className='text-gray-700 text-base mb-5'>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit,
