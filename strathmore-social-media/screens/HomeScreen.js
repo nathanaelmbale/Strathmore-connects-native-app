@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
-
+import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, ScrollView } from 'react-native'
+import Communities from '../components/Communities';
+import Posts from '../components/Posts';
 
 const HomeScreen = () => {
   const navigation = useNavigation()
@@ -9,39 +10,77 @@ const HomeScreen = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "Posts",
-      headerShown: true
+      headerShown: false
     })
   }, [])
   return (
     <SafeAreaView>
-      <View className='mx-4'>
-        <View className='card  my-3'>
-          <View className="">
-            <Image source={{
-              uri: 'https://plus.unsplash.com/premium_photo-1679436987388-52ece05745df?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80'
-            }}
-              className="bg-slate-400 w-100 h-52 rounded-t-lg"
-            />
+      {/* Headers*/}
+      <View className=' bg-white'>
+        <View className='flex-row pb-3 items-center mt-9 px-4 space-x-2'>
+          <Image source={{
+            uri: 'https://links.papareact.com/wru'
+          }}
+            className="bg-slate-400 w-10 h-10  rounded-full"
+          />
+          <View className="flex-1">
+            <Text className='font-bold text-3xl'>Strah connects</Text>
+            <Text className='font-bold text-gray-400 text-xs'>Nathanael</Text>
           </View>
 
-          <View className='card-body bg-white p-3 rounded-b-lg'>
-            <Text className='font-semibold text-3xl'>Lets us meet somewhere today</Text>
-            <Text className='text-gray-700 text-base mb-5'>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua. Ut enim ad minim veniam, quis nostrud
-              exercitation ullamco laboris nisi ut aliquip ex ea commodo
-              consequat.
-            </Text>
-            <View className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-2 rounded">
-              <Text className=" text-white text-center">View Post</Text>
-            </View>
-          </View>
+
         </View>
 
+        {/*Seach bar */}
+        <View className='bg-white flex-row items-center pb-3 px-4'>
+          <View className='flex-row flex-1 space-x-2 bg-gray-200 p-2'>
+            <TextInput
+              placeholder='Search for community'
+              keyboardType='default'
+              className='text-xl'
+            />
+
+          </View>
+          {/**Button */}
+          <View
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold  py-3.5 px-6 
+           ">
+            <Text className=" text-white text-center">Search</Text>
+          </View>
 
 
+        </View>
+        {/**Communities */}
+        <View className='pl-3.5 pb-3.5'>
+          <Communities />
+        </View>
       </View>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        className='main-body px-4 '>
+
+
+
+        
+        {/* Posts*/}
+        <Posts
+          imagePath='https://plus.unsplash.com/premium_photo-1679436987388-52ece05745df?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80'
+          title='Lets us meet somewhere today'
+          description='This is a post amde to invite all students to a meeting happening in the hall at 12.30pm on Friday'
+        />
+        <Posts
+          imagePath='https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
+          title='Lets us meet somewhere today'
+          description='This is a post amde to invite all students to a meeting 
+                      happening in the hall at 12.30pm on Friday'
+        />
+        <Posts
+          imagePath='https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
+          title='Lets us meet somewhere today'
+          description='This is a post amde to invite all students to a meeting 
+                      happening in the hall at 12.30pm on Friday'
+        />
+      </ScrollView>
     </SafeAreaView>
   )
 }
