@@ -3,6 +3,7 @@ import React, { useLayoutEffect } from 'react'
 import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, ScrollView } from 'react-native'
 import Communities from '../components/Communities';
 import Posts from '../components/Posts';
+import PostForm from '../components/PostForm';
 
 const HomeScreen = () => {
   const navigation = useNavigation()
@@ -16,7 +17,7 @@ const HomeScreen = () => {
   return (
     <SafeAreaView>
       {/* Headers*/}
-      <View className=' bg-white'>
+      <View className=' bg-white drop-shadow-sm'>
         <View className='flex-row pb-3 items-center mt-9 px-4 space-x-2'>
           <Image source={{
             uri: 'https://links.papareact.com/wru'
@@ -58,10 +59,8 @@ const HomeScreen = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         className='main-body px-4 '>
+        <PostForm />
 
-
-
-        
         {/* Posts*/}
         <Posts
           imagePath='https://plus.unsplash.com/premium_photo-1679436987388-52ece05745df?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80'
