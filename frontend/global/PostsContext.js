@@ -12,12 +12,12 @@ const PostsConextProvider = ({ children }) => {
 
     const fetchPosts = async () => {
       try {
-        const response = await fetch('http://localhost:9000/post')
+        const response = await fetch('http://192.168.100.103:9000/post')
         console.log('Response status:', response.status)
 
         if (response.ok) {
           const fetchedPosts = await response.json()
-          console.log("fetchedPosts variable", JSON.stringify(fetchedPosts))
+          //console.log("fetchedPosts variable", JSON.stringify(fetchedPosts))
           setPosts(fetchedPosts)
         } else {
           setError("Unable to fetch posts")

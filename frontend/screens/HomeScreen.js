@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useLayoutEffect } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, ScrollView, Button } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, ScrollView, TouchableOpacity } from 'react-native'
 import Communities from '../components/Communities';
 import Posts from '../components/Posts';
 import PostForm from '../components/PostForm';
@@ -10,7 +10,7 @@ const HomeScreen = () => {
   const navigation = useNavigation()
 
   const { posts } = useContext(PostsContext)
-  console.log("Post in context is",posts)
+  console.log("Post in context is", posts)
   //replacement for useEffect
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -63,35 +63,19 @@ const HomeScreen = () => {
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        className='main-body px-4 '>
+        className='main-body px-4 h-100'>
 
-<View className='container mt-5 '>
-      {posts && posts.map((post) => (
-        <View className="" key={post._id}>
-          <Text className="text-2xl">{post.title}</Text>
-          <Text className="text-2xl">{post.description}</Text>
-          {/* render any other post data you want */}
-        </View>
-      ))}
-    </View>
         {/* Posts*/}
-        <Posts
-          imagePath='https://plus.unsplash.com/premium_photo-1679436987388-52ece05745df?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80'
-          title='Lets us meet somewhere today'
-          description='This is a post amde to invite all students to a meeting happening in the hall at 12.30pm on Friday'
-        />
-        <Posts
-          imagePath='https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
-          title='Lets us meet somewhere today'
-          description='This is a post amde to invite all students to a meeting 
-                      happening in the hall at 12.30pm on Friday'
-        />
-        <Posts
-          imagePath='https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80'
-          title='Lets us meet somewhere today'
-          description='This is a post amde to invite all students to a meeting 
-                      happening in the hall at 12.30pm on Friday'
-        />
+        {posts && posts.map((post) => (
+          <Posts
+            key={post._id}
+            title={post.title}
+            description={post.description}
+            imagePath={post.imagePath}
+          />
+        ))}
+
+
       </ScrollView>
     </SafeAreaView>
   )
