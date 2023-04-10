@@ -1,23 +1,43 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 
 const PostsContext = React.createContext();
 
 const PostsConextProvider = ({ children }) => {
-    const [ val , setVal ] = React.useState(0)
-    const [ val1 , setVal1 ] = React.useState(1)
-    const [ val3 , setVal3 ] = React.useState(2)
-    return (
-        <PostsContext.Provider value={{
-            val,
-            setVal,
-            val1,
-            setVal1,
-            val3,
-            setVal3
-        }}>
-            { children }
-        </PostsContext.Provider>
-    )
+
+  const [error, setError] = useState('')
+  const [posts, setPosts] = useState([])
+
+  useEffect(() => {
+    console.log("UseEffect")
+
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('http://localhost:9000/post')
+        console.log('Response status:', response.status)
+
+        if (response.ok) {
+          const fetchedPosts = await response.json()
+          console.log("fetchedPosts variable", JSON.stringify(fetchedPosts))
+          setPosts(fetchedPosts)
+        } else {
+          setError("Unable to fetch posts")
+          console.log("error", error)
+        }
+      } catch (error) {
+        console.log("Error fetching posts:", error)
+        setError("Unable to fetch posts")
+      }
+    }
+
+    fetchPosts()
+
+  }, [])
+
+  return (
+    <PostsContext.Provider value={{ posts }}>
+      {children}
+    </PostsContext.Provider>
+  )
 }
 
-export {PostsConextProvider , PostsContext}
+export { PostsConextProvider, PostsContext }

@@ -9,14 +9,8 @@ import { PostsContext } from '../global/PostsContext';
 const HomeScreen = () => {
   const navigation = useNavigation()
 
-  const {
-    val,
-    setVal,
-    val1,
-    setVal1,
-    val3,
-    setVal3
-  } = useContext(PostsContext)
+  const { posts } = useContext(PostsContext)
+  console.log("Post in context is",posts)
   //replacement for useEffect
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -70,17 +64,16 @@ const HomeScreen = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         className='main-body px-4 '>
-          <Text>{val}</Text>
-          <Text>{val1}</Text>
-          <Text>{val3}</Text>
-          <Button 
-            title='Increase'
-            onPress={() => {
-              setVal(val+1)
-              setVal1(val1+1)
-              setVal3(val3+1)
-            }}
-            />
+
+<View className='container mt-5 '>
+      {posts && posts.map((post) => (
+        <View className="" key={post._id}>
+          <Text className="text-2xl">{post.title}</Text>
+          <Text className="text-2xl">{post.description}</Text>
+          {/* render any other post data you want */}
+        </View>
+      ))}
+    </View>
         {/* Posts*/}
         <Posts
           imagePath='https://plus.unsplash.com/premium_photo-1679436987388-52ece05745df?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80'
