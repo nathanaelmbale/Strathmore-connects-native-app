@@ -1,12 +1,22 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useLayoutEffect } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, ScrollView } from 'react-native'
+import React, { useContext, useLayoutEffect } from 'react'
+import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, ScrollView, Button } from 'react-native'
 import Communities from '../components/Communities';
 import Posts from '../components/Posts';
 import PostForm from '../components/PostForm';
+import { PostsContext } from '../global/PostsContext';
 
 const HomeScreen = () => {
   const navigation = useNavigation()
+
+  const {
+    val,
+    setVal,
+    val1,
+    setVal1,
+    val3,
+    setVal3
+  } = useContext(PostsContext)
   //replacement for useEffect
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -55,12 +65,22 @@ const HomeScreen = () => {
         <View className='pl-3.5 pb-3.5'>
           <Communities />
         </View>
+
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         className='main-body px-4 '>
-        <PostForm />
-
+          <Text>{val}</Text>
+          <Text>{val1}</Text>
+          <Text>{val3}</Text>
+          <Button 
+            title='Increase'
+            onPress={() => {
+              setVal(val+1)
+              setVal1(val1+1)
+              setVal3(val3+1)
+            }}
+            />
         {/* Posts*/}
         <Posts
           imagePath='https://plus.unsplash.com/premium_photo-1679436987388-52ece05745df?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=869&q=80'
