@@ -1,16 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext, useLayoutEffect } from 'react'
-import { StyleSheet, Text, View, SafeAreaView, Image, TextInput, ScrollView, TouchableOpacity } from 'react-native'
+import { Text, View, SafeAreaView, Image, TextInput, ScrollView, TouchableOpacity } from 'react-native'
 import Communities from '../components/Communities';
 import Posts from '../components/Posts';
-import PostForm from '../components/PostForm';
 import { PostsContext } from '../global/PostsContext';
 
 const HomeScreen = () => {
   const navigation = useNavigation()
 
   const { posts } = useContext(PostsContext)
-  console.log("Post in context is", posts)
+
   //replacement for useEffect
   useLayoutEffect(() => {
     navigation.setOptions({

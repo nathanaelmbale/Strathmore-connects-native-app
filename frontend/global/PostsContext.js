@@ -19,10 +19,7 @@ const PostsConextProvider = ({ children }) => {
           const fetchedPosts = await response.json()
           //console.log("fetchedPosts variable", JSON.stringify(fetchedPosts))
           setPosts(fetchedPosts)
-        } else {
-          setError("Unable to fetch posts")
-          console.log("error", error)
-        }
+        } 
       } catch (error) {
         console.log("Error fetching posts:", error)
         setError("Unable to fetch posts")

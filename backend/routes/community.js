@@ -39,7 +39,7 @@ const requireAuth = async (req , res , next) => {
 //require route for all routes
 const router = express.Router()
 
-router.use(requireAuth)//this middle ware checks the validity of the user token
+//router.use(requireAuth)//this middle ware checks the validity of the user token
 
 //gets all Communities
 router.get('/', getCommunities)
