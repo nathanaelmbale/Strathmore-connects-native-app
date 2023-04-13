@@ -10,7 +10,7 @@ const HomeScreen = () => {
   const navigation = useNavigation()
 
   const { posts } = useContext(PostsContext)
-  console.log("Post in context is", posts)
+  //console.log("Post in context is", posts)
   //replacement for useEffect
   useLayoutEffect(() => {
     navigation.setOptions({

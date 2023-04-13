@@ -12,7 +12,7 @@ const PostsConextProvider = ({ children }) => {
 
     const fetchPosts = async () => {
       try {
-        const response = await fetch('http://192.168.100.103:9000/post')
+        const response = await fetch('http://192.168.100.200:9000/post')
         console.log('Response status:', response.status)
 
         if (response.ok) {

@@ -4,7 +4,9 @@ import React from 'react'
 const Community = ({ communityName }) => {
   return (
     <TouchableOpacity>
-      <Text className='bg-gray-200 rounded mx-0.5 p-2'>{communityName}</Text>
+      <View key={key}>
+        <Text className='bg-gray-200 rounded mx-0.5 p-2'>{name}</Text>
+      </View>
     </TouchableOpacity>
   )
 }
