@@ -5,7 +5,7 @@ import { CommunitiesContext } from '../global/CommunityContext'
 
 const Communities = () => {
     const { communities } = useContext(CommunitiesContext)
-    console.log("Community context" ,communities)
+    //console.log("Community context", communities)
     console.log()
     return (
         <ScrollView
@@ -13,9 +13,15 @@ const Communities = () => {
             showsHorizontalScrollIndicator={false}
         >
             <View className='flex-row'>
-                {communities && communities.map((community)=> (
-                <Community communityName={community.name} key={community._id} />
-            ))}
+                {communities && communities.map((community) => (
+                    <Community
+                        key={community._id}
+                        _id={community._id}
+                        name={community.name}
+                        description={community.description}
+                        communities = {communities}
+                        accounts ={community.accounts} />
+                ))}
             </View>
 
         </ScrollView>

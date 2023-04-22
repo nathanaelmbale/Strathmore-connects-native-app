@@ -9,7 +9,7 @@ const CommunityContextProvider = ({ children }) => {
     useEffect(() => {
         const fetchCommunities = async () => {
             try {
-                const response = await fetch('http://192.168.100.103:9000/community')
+                const response = await fetch('http://192.168.100.200:9000/community')
                 console.log('Response status:', response.status)
 
                 if (response.ok) {
