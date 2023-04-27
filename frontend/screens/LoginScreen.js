@@ -105,7 +105,7 @@ const LoginScreen = () => {
             <Text className=" text-white text-center">Log in</Text>
           </TouchableOpacity>
           {error ?
-            <View className='bg-red-300 rounded p-3 m=2'>
+            <View className='bg-red-300 rounded p-3 m-2'>
               <Text className='text-red-900'>{error}</Text>
             </View> :
             null}

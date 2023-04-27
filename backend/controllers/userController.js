@@ -131,7 +131,7 @@ const myNotification = async (req, res) => {
     const { email } = req.body
 
     //log the request body for debugging
-    console.log("changePassword request body:",req.body)
+    console.log("Notifications request body:",req.body)
 
 
     try {
@@ -141,7 +141,7 @@ const myNotification = async (req, res) => {
             throw Error('Couldnt find an email')
         }
 
-        res.status(200).json({ email: user.email, notification: user.notification })
+        res.status(200).json({ email: user.email, notifications: user.notification })
 
     } catch (error) {
 
@@ -199,6 +199,7 @@ const DeleteNotification = async (req, res) => {
             throw new Error('User not found');
         }
 
+        console.log(user)
         // find index of notification with given ID
         const index = user.notification.findIndex(n => n._id.toString() === notificationId);
         if (index === -1) {
@@ -211,9 +212,10 @@ const DeleteNotification = async (req, res) => {
         // save changes to database
         await user.save();
 
-        res.status(200).json({ email: user.email, notification: user.notification });
+        res.status(200).json({ email: user.email, notifications: user.notification });
 
     } catch (error) {
+        console.log(error)
         res.status(400).json({ message: error.message });
     }
 }

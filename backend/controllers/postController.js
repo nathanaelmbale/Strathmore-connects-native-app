@@ -167,7 +167,7 @@ const comment = async (req, res) => {
         await post.save()
 
         //sends comments as a response
-        res.status(200).json(post.comments)
+        res.status(200).json(post.comments.reverse())
 
     } catch (error) {
         res.status(400).json({ msg: error.message })
@@ -207,7 +207,7 @@ const deleteComment = async (req, res) => {
 
         console.log(post.comments)
         // send  response indicating comment was deleted successfully along with updated comments array
-        res.status(200).json({ message: 'Comment deleted successfully', comments: post.comments })
+        res.status(200).json({ message: 'Comment deleted successfully', comments: post.comments.reverse() })
     } catch (error) {
         // send response indicating error occurred
         res.status(400).json({ message: error.message })

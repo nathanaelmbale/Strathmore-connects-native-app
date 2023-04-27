@@ -55,7 +55,7 @@ const PostsConextProvider = ({ children }) => {
    //console.log("current post",post)
     // If post is found, set the comments state to the comments of that post
     if (post) {
-      setComments(post.comments);
+      setComments(post.comments.reverse());
       console.log(comments)
     } else {
       // If post is not found, set comments state to empty array
@@ -64,7 +64,9 @@ const PostsConextProvider = ({ children }) => {
    }
 
    const updateComments = (comments) => {
+    console.log("tumefika")
     setComments(comments)
+    console.log("tumefika",comments)
    }
 
 
