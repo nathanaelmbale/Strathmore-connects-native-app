@@ -2,6 +2,7 @@ const User = require('../models/userModel')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
+
 //create token jwt token
 const createToken = (_id) => {
     //which expires in 30 days
@@ -34,7 +35,8 @@ const loginUser = async (req, res) => {
             name,
             token,
             admin: user.admin,
-            _id: user._id
+            _id: user._id,
+            notifications : user.notification
         })
 
     } catch (error) {
@@ -86,7 +88,8 @@ const signupUser = async (req, res) => {
             token,
             name,
             admin: user.admin,
-            _id: user._id
+            _id: user._id,
+            notifications : user.notification
         })
 
     } catch (error) {

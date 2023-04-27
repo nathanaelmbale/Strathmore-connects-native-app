@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useContext, useEffect, useLayoutEffect } from 'react'
 import { SafeAreaView, View, Text, ScrollView } from 'react-native'
 import Posts from '../components/Posts';
@@ -10,8 +11,6 @@ const HomeScreen = () => {
 
   const { posts } = useContext(PostsContext)
 
-  const user =null
-
   //replacement for useEffect
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -21,10 +20,24 @@ const HomeScreen = () => {
   }, [])
 
   useEffect(() => {
-    if (!user) {
-      navigation.navigate('Signup')
-    }
-  })
+    const fetchUserData = async () => {
+      console.log("this");
+      try {
+        const jsonValue = await AsyncStorage.getItem('user');
+
+        if (!jsonValue) {
+          navigation.navigate('Login');
+        } 
+      } catch (error) {
+        // Handle error
+        console.error('Error fetching user data from AsyncStorage:', error);
+      }
+    };
+
+    fetchUserData()
+  }, []);
+
+
   return (
     <SafeAreaView className=''>
       {/* Headers*/}
@@ -41,6 +54,7 @@ const HomeScreen = () => {
             title={post.title}
             description={post.description}
             imagePath={post.imagePath}
+            _id= {post._id}
             post={post}
           />
         ))}

@@ -205,8 +205,9 @@ const deleteComment = async (req, res) => {
         // save updated post
         await post.save()
 
+        console.log(post.comments)
         // send  response indicating comment was deleted successfully along with updated comments array
-        res.status(200).json({ message: 'Comment deleted successfully', comment: post.comments })
+        res.status(200).json({ message: 'Comment deleted successfully', comments: post.comments })
     } catch (error) {
         // send response indicating error occurred
         res.status(400).json({ message: error.message })

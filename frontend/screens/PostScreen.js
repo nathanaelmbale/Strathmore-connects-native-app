@@ -1,96 +1,138 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native'
+import React, { useEffect, useContext, useState } from 'react'
+import { useNavigation } from '@react-navigation/native';
+import { PostsContext } from '../global/PostsContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 const PostScreen = (props) => {
   const { post } = props.route.params
+  const { comments, getComments, updateComments } = useContext(PostsContext)
+  const [comment, setComment] = useState('')
+  const navigation = useNavigation()
 
   const imagePath = post.imagePath
   const title = post.title
   const description = post.description
-  const comments = post.comments
+  const post_id = post._id
+  let user = null
 
-  console.log(comments.length)
+  useEffect(() => {
+    getComments(post_id)
+    //console.log("Comments",comments)
 
-  // const makeAComment = async (e) => {
-  //   e.preventDefault()
+    const fetchUserData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('user');
+        //console.log("json",jsonValue)
+        if (jsonValue) {
+          const userObj = JSON.parse(jsonValue);
+          user = userObj;
+        }
+        else {
+          navigation.navigate('Login');
+        }
+      } catch (error) {
+        // Handle error
+        console.error('Error fetching user data from AsyncStorage:', error);
+      }
+    };
 
-  //   const obj = {
-  //     _id: post._id,
-  //     comment: comment,
-  //     user: user.email
-  //   }
-  //   try {
-  //     const response = await fetch('/post/comment', {
-  //       method: "POST",
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': `Bearer ${user.token}`
-  //       },
-  //       body: JSON.stringify(obj)
-  //     })
-  //     const json = await response.json();
-  //     console.log("comment created", {})
-  //     setComment("")
+    fetchUserData()
+    console.log("current user", user)
+  }, [user]);
 
-  //     //console.log("commentsss", json)//--the creators notification
-  //     dispatchComments({ type: 'SET_COMMENTS', payload: json })
-
-  //     if (json && user.email !== post.email) {
-  //       notifyUser()
-  //     }
-
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  const makeAComment = async () => {
+    e.preventDefault()
 
 
-  // const deleteComment = async (commentId) => {
-  //   const obj = {
-  //     postId: post._id,
-  //     commentId: commentId
-  //   }
-  //   try {
-  //     const response = await fetch('/post/uncomment', {
-  //       method: "DELETE",
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': `Bearer ${user.token}`
-  //       },
-  //       body: JSON.stringify(obj)
-  //     })
-  //     const json = await response.json()
-  //     console.log(json)
-  //     dispatchComments({ type: 'SET_COMMENTS', payload: json.comment })
+    try {
+      const jsonValue = await AsyncStorage.getItem('user');
+      const userObj = JSON.parse(jsonValue)
 
-  //     //delete the comment from the user notification
-  //     if (json.message === "Comment deleted successfully") {
-  //       console.log("email", post)
-  //       try {
-  //         const request = {
-  //           email: post.email,
-  //           notificationId: postId
-  //         }
+      const response = await fetch('/post/comment', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userObj.token}`
+        },
+        body: JSON.stringify({
+          id: post._id,
+          comment: comment,
+          user: userObj.email
+        })
+      })
+      const json = await response.json();
+      setComment("")
 
-  //         const response = await fetch('/user/notification/delete', {
-  //           method: "DELETE",
-  //           headers: {
-  //             'Content-Type': 'application/json',
-  //             'Authorization': `Bearer ${user.token}`
-  //           },
-  //           body: JSON.stringify(request)
-  //         })
-  //         await response.json()
-  //         //("deleted notification", json)
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     }
+      //console.log("commentsss", json)//--the creators notification
+      dispatchComments({ type: 'SET_COMMENTS', payload: json })
 
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+      if (json && user.email !== post.email) {
+        notifyUser()
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+  const deleteComment = async (commentId) => {
+    console.log("Comment", commentId)
+
+    try {
+      const jsonValue = await AsyncStorage.getItem('user');
+      const userObj = JSON.parse(jsonValue)
+
+      const response = await fetch('http://192.168.100.200:9000/post/uncomment', {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userObj.token}`
+        },
+        body: JSON.stringify({ postId: post._id, commentId })
+      })
+      const json = await response.json()
+
+
+
+
+
+      //delete the comment from the user notification
+      if (json.message === "Comment deleted successfully") {
+
+        try {
+          const request = {
+            email: post.email,
+            notificationId: post._id
+          }
+
+          const response = await fetch('/user/notification/delete', {
+            method: "DELETE",
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${user.token}`
+            },
+            body: JSON.stringify(request)
+          })
+          await response.json()
+          //("deleted notification", json)
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      if (response.ok) {
+        await updateComments(json.comments);
+        console.log("updated meessage   ", json.message)
+        console.log("updated comments", json.comments)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <View className='card p-4'>
@@ -112,17 +154,16 @@ const PostScreen = (props) => {
             {description}
           </Text>
         </View>
-        {comments.length > 0 ? <Text className='ml-3 font-bold text-lg'>Comments</Text> : null}
+        {comments && comments.length > 0 ? <Text className='ml-3 font-bold text-lg'>Comments</Text> : null}
         {comments && comments.map((comment) => (
-          <View className='flex-row items-center px-3 py-2'>
+          <View key={comment._id} className='flex-row items-center px-3 py-2'>
             <View className='flex-1 flex-col'>
-              <Text className='text-lg' key={comment._id}> {comment.comment}</Text>
+              <Text className='text-lg' > {comment.comment}</Text>
               <Text className='text-xs text-gray-400 ml-1'>comment by {comment.user}</Text>
             </View>
-            <TouchableOpacity className=" bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-1 rounded">
+            <TouchableOpacity onPress={() => deleteComment(comment._id)} className=" bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-1 rounded">
               <Text
                 className=" text-white text-center"
-                onPress={() => navigation.navigate('Post', { post })}
               >
                 Delete comment</Text>
             </TouchableOpacity >

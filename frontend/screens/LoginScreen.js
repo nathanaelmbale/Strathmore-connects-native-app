@@ -1,5 +1,6 @@
 import { View, Text, TextInput, SafeAreaView, TouchableOpacity } from 'react-native'
-import React, { useState, useLayoutEffect ,useContext } from 'react'
+import React, { useState, useLayoutEffect, useContext, useEffect } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LoginContext } from '../global/LoginContext'
 import { useNavigation } from '@react-navigation/native'
 import {
@@ -12,7 +13,9 @@ const LoginScreen = () => {
   const navigation = useNavigation()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login ,error ,isLoading } = useContext(LoginContext)
+  const [user, setUser] = useState()
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -21,9 +24,44 @@ const LoginScreen = () => {
     })
   }, [])
 
+
+
   const LoginUser = () => {
     // You can access the captured values in the state variables (name, email, password) here
-    login(email ,password)
+    const login = async (email, password) => {
+      setIsLoading(true)
+      setError(null)
+      await AsyncStorage.removeItem('user');
+      console.log("Tupo site", email, password)
+
+      const response = await fetch('http://192.168.100.200:9000/user/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      })
+      const json = await response.json()
+
+      if (!response.ok) {
+        setIsLoading(false)
+        setError(json.message)
+      }
+      if (response.ok) {
+        setUser(json)
+        // save the user to local storage
+        try {
+
+          await AsyncStorage.setItem('user', JSON.stringify(json));
+          navigation.navigate('Home')
+        } catch (error) {
+          console.error('Error setting user to AsyncStorage:', error);
+        }
+
+        // update loading state
+        setIsLoading(false)
+      }
+    }
+
+    login(email, password)
 
   }
 
@@ -59,25 +97,31 @@ const LoginScreen = () => {
               onChangeText={setPassword}
             />
           </View>
+
           {/**Button */}
           <TouchableOpacity
             onPress={LoginUser}
             className="bg-blue-500 hover:bg-blue-600 rounded-lg text-white font-bold m-2  py-3.5 px-6">
             <Text className=" text-white text-center">Log in</Text>
           </TouchableOpacity>
+          {error ?
+            <View className='bg-red-300 rounded p-3 m=2'>
+              <Text className='text-red-900'>{error}</Text>
+            </View> :
+            null}
         </View>
         <View className="flex flex-row justify-center mt-0">
-            <Text className="text-base">Already have an account?</Text>
-            <TouchableOpacity
-              onPress={() => {
-                // Navigate to the login screen
-                navigation.navigate('Signup')
-                console.log('Navigate to Sign up screen');
-              }}
-              className="ml-1 text-blue-500 underline">
-              <Text className="text-blue-500 underline">Sign up</Text>
-            </TouchableOpacity>
-          </View>
+          <Text className="text-base">Already have an account?</Text>
+          <TouchableOpacity
+            onPress={() => {
+              // Navigate to the login screen
+              navigation.navigate('Signup')
+              console.log('Navigate to Sign up screen');
+            }}
+            className="ml-1 text-blue-500 underline">
+            <Text className="text-blue-500 underline">Sign up</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   )
